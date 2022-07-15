@@ -1,3 +1,4 @@
+import { IUserStore } from './../interfaces/user-store.interface';
 import { STORE_CODE } from './../constants/commons';
 import { UpdatePasswordDto } from './../user/dto/update-password.dto';
 import { CreateUserDto } from './../user/dto/create-user.dto';
@@ -6,7 +7,7 @@ import { UserEntity } from 'src/user/entities/user.entity';
 import { getTimeStamp } from 'src/utils/common';
 
 // @Injectable()
-export class InMemoryUserStore /* implements IUserStore */ {
+export class InMemoryUserStore implements IUserStore {
   private readonly users: UserEntity[] = [];
 
   create({ login, password }: CreateUserDto): UserEntity {

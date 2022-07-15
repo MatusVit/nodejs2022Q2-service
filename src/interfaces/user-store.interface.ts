@@ -1,11 +1,15 @@
+import { UpdatePasswordDto } from './../user/dto/update-password.dto';
+import { STORE_CODE } from './../constants/commons';
 import { CreateUserDto } from './../user/dto/create-user.dto';
-import { IUser } from 'src/interfaces/user.interface';
 import { UserEntity } from 'src/user/entities/user.entity';
 
 export interface IUserStore {
   create: (createUserDto: CreateUserDto) => UserEntity;
   getAll: () => UserEntity[];
   get: (id: string) => UserEntity | null;
-  update: (user: IUser) => UserEntity | null;
+  updatePassword: (
+    id: string,
+    updatePasswordDto: UpdatePasswordDto,
+  ) => UserEntity | null | STORE_CODE;
   delete: (id: string) => UserEntity | null;
 }
