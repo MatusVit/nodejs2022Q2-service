@@ -36,9 +36,9 @@ export class UserService {
     return user;
   }
 
-  remove(id: string) {
+  remove(id: string): void {
     const user = this.store.delete(id);
     if (!user) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
-    return user;
+    return;
   }
 }

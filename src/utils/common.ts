@@ -1,1 +1,1 @@
-export const getTimeStamp = (): number => Math.floor(Date.now() / 1000);
+export const getTimeStamp = (): number => Date.now();
