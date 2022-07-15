@@ -1,0 +1,3 @@
+export enum STORE_CODE {
+  PASSWORD_WRONG = 'PASSWORD_WRONG',
+}

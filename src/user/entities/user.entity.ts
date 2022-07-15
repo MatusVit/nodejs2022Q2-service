@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 import { IUser } from 'src/interfaces/user.interface';
 
 export class UserEntity implements IUser {
@@ -7,6 +7,7 @@ export class UserEntity implements IUser {
 
   login: string;
 
+  @Exclude()
   password: string;
 
   version: number;
@@ -14,4 +15,8 @@ export class UserEntity implements IUser {
   createdAt: number;
 
   updatedAt: number;
+
+  constructor(partial: Partial<UserEntity>) {
+    Object.assign(this, partial);
+  }
 }
