@@ -6,6 +6,6 @@ import { InMemoryTrackStore } from 'src/store/track.store';
 @Module({
   controllers: [TrackController],
   providers: [TrackService, InMemoryTrackStore],
-  exports: [InMemoryTrackStore],
+  exports: [TrackService],
 })
 export class TrackModule {}

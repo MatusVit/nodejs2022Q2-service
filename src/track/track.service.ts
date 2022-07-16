@@ -31,7 +31,14 @@ export class TrackService {
   remove(id: string) {
     const entity = this.store.delete(id);
     if (!entity) throw new NotFoundException(MESSAGE.TRACK_NOT_EXIST);
-    // this.albumStore.deleteArtistId(id);
     return;
+  }
+
+  removeArtistId(id: string) {
+    this.store.deleteArtistId(id);
+  }
+
+  removeAlbumId(id: string) {
+    this.store.deleteAlbumId(id);
   }
 }

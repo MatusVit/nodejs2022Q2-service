@@ -1,3 +1,4 @@
+import { TrackService } from './../track/track.service';
 import { MESSAGE } from './../constants/massages';
 import { InMemoryAlbumStore } from './../store/album.store';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -6,7 +7,10 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 
 @Injectable()
 export class AlbumService {
-  constructor(private readonly store: InMemoryAlbumStore) {}
+  constructor(
+    private readonly store: InMemoryAlbumStore,
+    private readonly trackService: TrackService,
+  ) {}
 
   create(createDto: CreateAlbumDto) {
     return this.store.create(createDto);
@@ -33,11 +37,11 @@ export class AlbumService {
   remove(id: string) {
     const entity = this.store.delete(id);
     if (!entity) throw new NotFoundException(MESSAGE.ALBUM_NOT_EXIST);
+    this.trackService.removeAlbumId(id);
     return;
   }
 
-  deleteArtistId(id: string): void {
+  removeArtistId(id: string) {
     this.store.deleteArtistId(id);
-    return;
   }
 }
