@@ -1,3 +1,4 @@
+import { InMemoryAlbumStore } from './../store/album.store';
 import { MESSAGE } from './../constants/massages';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InMemoryArtistStore } from 'src/store/artists.store';
@@ -6,7 +7,10 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 
 @Injectable()
 export class ArtistService {
-  constructor(private readonly store: InMemoryArtistStore) {}
+  constructor(
+    private readonly store: InMemoryArtistStore,
+    private readonly albumStore: InMemoryAlbumStore,
+  ) {}
 
   create(createDto: CreateArtistDto) {
     return this.store.create(createDto);
@@ -33,6 +37,7 @@ export class ArtistService {
   remove(id: string) {
     const entity = this.store.delete(id);
     if (!entity) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
+    this.albumStore.deleteArtistId(id);
     return;
   }
 }

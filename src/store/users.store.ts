@@ -5,8 +5,9 @@ import { CreateUserDto } from './../user/dto/create-user.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { getTimeStamp } from 'src/utils/common';
+import { Injectable } from '@nestjs/common';
 
-// @Injectable()
+@Injectable()
 export class InMemoryUserStore implements IUserStore {
   private readonly users: UserEntity[] = [];
 
