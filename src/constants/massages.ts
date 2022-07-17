@@ -4,4 +4,5 @@ export const MESSAGE = {
   ALBUM_NOT_EXIST: `Album doesn't exist`,
   TRACK_NOT_EXIST: `Track doesn't exist`,
   PASSWORD_WRONG: `Old Password is wrong`,
+  NOT_FAVORITE: `It is not favorite`,
 };
