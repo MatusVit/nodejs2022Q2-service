@@ -11,8 +11,7 @@ import { AlbumService } from 'src/album/album.service';
 import { TrackService } from 'src/track/track.service';
 import { ArtistService } from 'src/artist/artist.service';
 import { InMemoryFavoritesStore } from 'src/store/favorites.store';
-import { STORE_CODE, TYPE_ENTITY } from 'src/constants/commons';
-import { MESSAGE } from 'src/constants/massages';
+import { TYPE_ENTITY } from 'src/constants/commons';
 
 const SERVICE = {
   [TYPE_ENTITY.ALBUMS]: 'albumService',

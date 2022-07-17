@@ -7,7 +7,6 @@ import { TrackModule } from 'src/track/track.module';
 import { FavsModule } from 'src/favs/favs.module';
 
 @Module({
-  // imports: [AlbumModule, TrackModule, FavsModule],
   imports: [
     forwardRef(() => AlbumModule),
     forwardRef(() => TrackModule),

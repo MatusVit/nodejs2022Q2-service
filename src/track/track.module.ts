@@ -5,7 +5,6 @@ import { InMemoryTrackStore } from 'src/store/track.store';
 import { FavsModule } from 'src/favs/favs.module';
 
 @Module({
-  // imports: [FavsModule],
   imports: [forwardRef(() => FavsModule)],
   controllers: [TrackController],
   providers: [TrackService, InMemoryTrackStore],

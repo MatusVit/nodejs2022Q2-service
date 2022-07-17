@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import 'dotenv/config';
 import { dirname, join } from 'path';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
 import { readFile } from 'fs/promises';
 import { load } from 'js-yaml';
 import { ValidationPipe } from '@nestjs/common';

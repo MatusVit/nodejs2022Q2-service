@@ -1,9 +1,6 @@
 import { UpdateAlbumDto } from './../album/dto/update-album.dto';
 import { CreateAlbumDto } from './../album/dto/create-album.dto';
 import { Album } from './../album/entities/album.entity';
-import { UpdateArtistDto } from './../artist/dto/update-artist.dto';
-import { Artist } from './../artist/entities/artist.entity';
-import { CreateArtistDto } from './../artist/dto/create-artist.dto';
 import { STORE_CODE } from './../constants/commons';
 import { v4 as uuidv4 } from 'uuid';
 import { Injectable } from '@nestjs/common';

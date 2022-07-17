@@ -1,5 +1,5 @@
 import { ICreateUserDto } from './../../interfaces/user.interface';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto implements ICreateUserDto {
   @IsNotEmpty()
