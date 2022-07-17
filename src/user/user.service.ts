@@ -32,7 +32,7 @@ export class UserService {
 
     if (!user) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
     if (user === STORE_CODE.PASSWORD_WRONG)
-      throw new ForbiddenException(MESSAGE.USER_NOT_EXIST);
+      throw new ForbiddenException(MESSAGE.PASSWORD_WRONG);
     return user;
   }
 
