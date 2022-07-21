@@ -1,31 +1,36 @@
 version: '3.4'
 
 services:
-  homelibrary:
-    image: homelibrary
+  api:
     build:
+      dockerfile: Dockerfile
       context: .
-      dockerfile: ./Dockerfile
-    environment:
-      NODE_ENV: production
-    ports:
-      - 3000:3000
+      target: development
+    restart: always
     volumes:
-      - .:/app
+      - .:/usr/app
+      - ./usr/app/node_modules
+    env_file:
+      - .env
+    command: npm run start:dev
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
 
-  # postgres-db:
-  #   image: postgres
-  #   restart: always
-  #   build:
-  #     context: ./postgres-db
-  #     dockerfile: ./postgres-db/Dockerfile
-  #   environment:
-  #     NODE_ENV: production
-  #     POSTGRES_PASSWORD: secret
-  #   ports:
-  #     - 8080:8080
-  #   volumes:
-  #     - ./postgres-db:/postgres-db
+  postgres:
+    image: postgres:14.4-alpine
+    build:
+      dockerfile: ./postgres-db/Dockerfile
+      context: ./postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+#     volumes:
+#       - postgres-db:/var/lib/postgresql/data
 # volumes:
-#   postgres:
-#   # app:
+#   docker-nest-postgres:
