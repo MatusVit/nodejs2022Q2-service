@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.9'
 
 services:
   api:
@@ -15,22 +15,30 @@ services:
     command: npm run start:dev
     ports:
       - ${PORT}:${PORT}
+
     depends_on:
       - postgres
-
+    networks:
+      - container-net
+        # name: homelib-net
+        # driver: bridge
   postgres:
-    image: postgres:14.4-alpine
-    build:
-      dockerfile: ./postgres-db/Dockerfile
-      context: ./postgres-db
+    build: ./postgres-db
     restart: always
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PG_DATA: /var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
-#     volumes:
-#       - postgres-db:/var/lib/postgresql/data
-# volumes:
-#   docker-nest-postgres:
+    networks:
+      - container-net
+networks:
+  container-net:
+    name: container-net
+    driver: bridge
+volumes:
+  pgdata:

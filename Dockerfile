@@ -20,6 +20,7 @@ USER node
 
 # PRODUCTION
 FROM node:16-alpine As production
+WORKDIR /usr/app
 COPY --chown=node:node --from=build /usr/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/app/dist ./dist
 COPY --chown=node:node --from=build /usr/app/doc ./doc
