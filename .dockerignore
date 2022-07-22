@@ -6,7 +6,7 @@ dist
 postgres-db
 .vscode
 .git
-
+pgdata
 
 # **/.classpath
 # **/.dockerignore

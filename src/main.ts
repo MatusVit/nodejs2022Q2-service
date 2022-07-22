@@ -17,6 +17,9 @@ async function bootstrap() {
   const docAPI = await readFile(join(rootDirname, 'doc', 'api.yaml'), 'utf-8');
   const document = load(docAPI);
 
+  // const prismaService = app.get(PrismaService);
+  // await prismaService.enableShutdownHooks(app);
+
   SwaggerModule.setup('doc', app, document);
 
   await app.listen(port, () => console.log(`Server started on port ${port}`));
