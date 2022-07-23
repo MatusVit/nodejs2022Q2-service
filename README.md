@@ -89,7 +89,7 @@ docker-compose -f docker-compose.production.yml up
 docker pull matvi/music-library:db
 ```
 
-![ScreenShot](http://joxi.ru/GrqRWNziz9EWbm)
+![ScreenShot](http://joxi.ru/DrldGkNCKo8g9r)
 
 ## Scanning Docker local image
 
