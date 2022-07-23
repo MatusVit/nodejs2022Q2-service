@@ -1,11 +1,15 @@
 Dockerfile
 .dockerignore
-node_modules
+/node_modules
 npm-debug.log
-dist
-postgres-db
+/dist
+/pgdata
 .vscode
 .git
+/docker
+/.vs
+README.md
+docker-compose
 
 
 # **/.classpath
@@ -28,6 +32,5 @@ postgres-db
 # **/obj
 # **/secrets.dev.yaml
 # **/values.dev.yaml
-# **/postgres-db
 # **/dist
 # README.md

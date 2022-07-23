@@ -2,11 +2,12 @@ version: '3.9'
 
 services:
   api:
+    container_name: music-library-server
     build:
       dockerfile: Dockerfile
       context: .
       target: development
-    restart: always
+    restart: unless-stopped
     volumes:
       - .:/usr/app
       - ./usr/app/node_modules
@@ -20,25 +21,23 @@ services:
       - postgres
     networks:
       - container-net
-        # name: homelib-net
-        # driver: bridge
+
   postgres:
-    build: ./postgres-db
-    restart: always
+    container_name: music-library-db
+    build: ./docker/postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      PG_DATA: /var/lib/postgresql/data
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      PGDATA: '/var/lib/postgresql/data/pgdata'
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - .:/var/lib/postgresql/data
     networks:
       - container-net
 networks:
   container-net:
     name: container-net
     driver: bridge
-volumes:
-  pgdata:
