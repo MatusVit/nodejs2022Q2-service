@@ -2,29 +2,20 @@ version: '3.9'
 
 services:
   api:
-    container_name: music-library-server
-    build:
-      dockerfile: Dockerfile
-      context: .
-      target: development
+    image: matvi/music-library:server
     restart: unless-stopped
-    volumes:
-      - .:/usr/app
-      - ./usr/app/node_modules
     env_file:
       - .env
-    command: npm run start:dev
     ports:
       - ${PORT}:${PORT}
-
     depends_on:
       - postgres
     networks:
       - container-net
+    command: node dist/main.js
 
   postgres:
-    container_name: music-library-db
-    build: ./docker/postgres
+    image: matvi/music-library:db
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB}

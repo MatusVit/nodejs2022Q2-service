@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: ${SERVER_NAME}
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    image: ${SERVER_IMAGE_NAME}
+    restart: unless-stopped
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    env_file:
+      - .env
+    command: npm run start:dev
+    ports:
+      - ${PORT}:${PORT}
+
+    depends_on:
+      - postgres
+    networks:
+      - container-net
+
+  postgres:
+    container_name: ${DB_NAME}
+    build: ./docker/postgres
+    image: ${DB_IMAGE_NAME}
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - .:/var/lib/postgresql/data
+    networks:
+      - container-net
+networks:
+  container-net:
+    name: container-net
+    driver: bridge

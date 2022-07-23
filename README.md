@@ -58,3 +58,41 @@ npm run test test/tracks.e2e-spec.ts
 ```bash
 npm run test test/favorites.e2e-spec.ts
 ```
+
+## Running application with Docker
+
+in docker branch
+
+```bash
+git checkout docker
+```
+
+### development mode
+
+```bash
+docker-compose -f docker-compose.development.yml up
+```
+
+### production mode
+
+```bash
+docker-compose -f docker-compose.production.yml up
+```
+
+## Downloading Docker Images
+
+```bash
+ docker pull matvi/music-library:server
+```
+
+```bash
+docker pull matvi/music-library:db
+```
+
+![ScreenShot](http://joxi.ru/GrqRWNziz9EWbm)
+
+## Scanning Docker local image
+
+```bash
+npm run scan
+```
