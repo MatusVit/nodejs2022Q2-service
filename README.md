@@ -70,7 +70,7 @@ git checkout docker
 ### development mode
 
 ```bash
-docker-compose -f docker-compose.development.yml up
+docker-compose -f docker-compose.development.yml up -d -V --build
 ```
 
 ### production mode
