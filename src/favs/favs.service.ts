@@ -12,6 +12,7 @@ import { TrackService } from 'src/track/track.service';
 import { ArtistService } from 'src/artist/artist.service';
 import { InMemoryFavoritesStore } from 'src/store/favorites.store';
 import { TYPE_ENTITY } from 'src/constants/commons';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 const SERVICE = {
   [TYPE_ENTITY.ALBUMS]: 'albumService',
@@ -21,47 +22,33 @@ const SERVICE = {
 
 @Injectable()
 export class FavsService {
-  constructor(
-    private readonly store: InMemoryFavoritesStore,
-    @Inject(forwardRef(() => AlbumService))
-    private readonly albumService: AlbumService,
+  constructor(private prisma: PrismaService) {}
 
-    @Inject(forwardRef(() => TrackService))
-    private readonly trackService: TrackService,
-
-    @Inject(forwardRef(() => ArtistService))
-    private readonly artistService: ArtistService,
-  ) {}
-
-  getAll(): Favorites {
-    const favoriteIds = this.store.getAll();
-
-    const albums = favoriteIds.albums.map((id) =>
-      this.albumService.findOne(id),
-    );
-
-    const artists = favoriteIds.artists.map((id) =>
-      this.artistService.findOne(id),
-    );
-
-    const tracks = favoriteIds.tracks.map((id) =>
-      this.trackService.findOne(id),
-    );
-
-    const favorites = new Favorites({ albums, artists, tracks });
-
-    return favorites;
+  async getAll() {
+    // const favoriteIds = this.store.getAll();
+    // const albums = await favoriteIds.albums.map((id) =>
+    //   this.albumService.findOne(id),
+    // );
+    // const artists = favoriteIds.artists.map((id) =>
+    //   this.artistService.findOne(id),
+    // );
+    // const tracks = favoriteIds.tracks.map((id) =>
+    //   this.trackService.findOne(id),
+    // );
+    // const favorites = new Favorites({ albums, artists, tracks });
+    // const favorites = new Favorites({ [], [], [] });
+    // return favorites;
   }
 
   private addId(id: string, typeEntity: TYPE_ENTITY) {
-    try {
-      this[SERVICE[typeEntity]].findOne(id);
-      this.store.addId(id, typeEntity);
-    } catch (error) {
-      if (error instanceof NotFoundException)
-        throw new HttpException(error.message, HttpStatus.UNPROCESSABLE_ENTITY);
-      throw error;
-    }
+    // try {
+    //   this[SERVICE[typeEntity]].findOne(id);
+    //   this.store.addId(id, typeEntity);
+    // } catch (error) {
+    //   if (error instanceof NotFoundException)
+    //     throw new HttpException(error.message, HttpStatus.UNPROCESSABLE_ENTITY);
+    //   throw error;
+    // }
   }
 
   addTrack(id: string) {
@@ -77,7 +64,7 @@ export class FavsService {
   }
 
   private removeId(id: string, typeEntity: TYPE_ENTITY) {
-    this.store.deleteId(id, typeEntity);
+    // this.store.deleteId(id, typeEntity);
   }
 
   removeTrack(id: string) {

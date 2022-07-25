@@ -1,56 +1,51 @@
 import { MESSAGE } from './../constants/massages';
-import {
-  forwardRef,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { InMemoryTrackStore } from 'src/store/track.store';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { FavsService } from 'src/favs/favs.service';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Track } from './entities/track.entity';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class TrackService {
-  constructor(
-    private readonly store: InMemoryTrackStore,
+  constructor(private prisma: PrismaService) {}
 
-    @Inject(forwardRef(() => FavsService))
-    private readonly favsService: FavsService,
-  ) {}
-
-  create(createDto: CreateTrackDto) {
-    return this.store.create(createDto);
+  async create(createDto: CreateTrackDto) {
+    const track = await this.prisma.track.create({
+      data: createDto,
+    });
+    return plainToInstance(Track, track);
   }
 
-  findAll() {
-    return this.store.getAll();
+  async findAll() {
+    const tracks = await this.prisma.track.findMany();
+    return tracks.map((track) => plainToInstance(Track, track));
   }
 
-  findOne(id: string) {
-    const entity = this.store.get(id);
-    if (!entity) throw new NotFoundException(MESSAGE.TRACK_NOT_EXIST);
-    return entity;
+  async findOne(id: string) {
+    const track = await this.prisma.track.findUnique({ where: { id } });
+
+    if (!track) throw new NotFoundException(MESSAGE.TRACK_NOT_EXIST);
+
+    return plainToInstance(Track, track);
   }
 
-  update(id: string, updateDto: UpdateTrackDto) {
-    const entity = this.store.update(id, updateDto);
-    if (!entity) throw new NotFoundException(MESSAGE.TRACK_NOT_EXIST);
-    return entity;
+  async update(id: string, updateDto: UpdateTrackDto) {
+    const track = await this.prisma.track.update({
+      where: { id },
+      data: updateDto,
+    });
+
+    if (!track) throw new NotFoundException(MESSAGE.TRACK_NOT_EXIST);
+
+    return plainToInstance(Track, track);
   }
 
-  remove(id: string) {
-    const entity = this.store.delete(id);
-    if (!entity) throw new NotFoundException(MESSAGE.TRACK_NOT_EXIST);
-    this.favsService.removeTrack(id);
+  async remove(id: string) {
+    const track = await this.prisma.artist.delete({ where: { id } });
+
+    if (!track) throw new NotFoundException(MESSAGE.TRACK_NOT_EXIST);
+
     return;
-  }
-
-  removeArtistId(id: string) {
-    this.store.deleteArtistId(id);
-  }
-
-  removeAlbumId(id: string) {
-    this.store.deleteAlbumId(id);
   }
 }

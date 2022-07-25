@@ -1,19 +1,11 @@
-import { InMemoryArtistStore } from './../store/artists.store';
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { ArtistController } from './artist.controller';
-import { AlbumModule } from 'src/album/album.module';
-import { TrackModule } from 'src/track/track.module';
-import { FavsModule } from 'src/favs/favs.module';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
-  imports: [
-    forwardRef(() => AlbumModule),
-    forwardRef(() => TrackModule),
-    forwardRef(() => FavsModule),
-  ],
   controllers: [ArtistController],
-  providers: [ArtistService, InMemoryArtistStore],
+  providers: [ArtistService, PrismaService],
   exports: [ArtistService],
 })
 export class ArtistModule {}

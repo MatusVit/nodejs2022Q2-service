@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -18,18 +18,18 @@ export class UserService {
     const user = await this.prisma.user.create({
       data: createUserDto,
     });
-    return plainToClass(UserEntity, user);
+    return plainToInstance(UserEntity, user);
   }
 
   async findAll(): Promise<UserEntity[]> {
     const users = await this.prisma.user.findMany();
-    return users.map((user) => plainToClass(UserEntity, user));
+    return users.map((user) => plainToInstance(UserEntity, user));
   }
 
   async findOne(id: string): Promise<UserEntity> {
     const user = await this.prisma.user.findFirst({ where: { id } });
     if (!user) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
-    return plainToClass(UserEntity, user);
+    return plainToInstance(UserEntity, user);
   }
 
   async updatePassword(
@@ -50,7 +50,7 @@ export class UserService {
         version: { increment: 1 },
       },
     });
-    return plainToClass(UserEntity, user);
+    return plainToInstance(UserEntity, user);
   }
 
   async remove(id: string): Promise<void> {

@@ -1,60 +1,51 @@
 import { MESSAGE } from './../constants/massages';
-import {
-  forwardRef,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { InMemoryArtistStore } from 'src/store/artists.store';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { TrackService } from 'src/track/track.service';
-import { AlbumService } from 'src/album/album.service';
-import { FavsService } from 'src/favs/favs.service';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { plainToInstance } from 'class-transformer';
+import { Artist } from './entities/artist.entity';
 
 @Injectable()
 export class ArtistService {
-  constructor(
-    private readonly store: InMemoryArtistStore,
+  constructor(private prisma: PrismaService) {}
 
-    @Inject(forwardRef(() => TrackService))
-    private readonly trackService: TrackService,
-
-    @Inject(forwardRef(() => AlbumService))
-    private readonly albumService: AlbumService,
-
-    @Inject(forwardRef(() => FavsService))
-    private readonly favsService: FavsService,
-  ) {}
-
-  create(createDto: CreateArtistDto) {
-    return this.store.create(createDto);
+  async create(createDto: CreateArtistDto) {
+    const artist = await this.prisma.artist.create({
+      data: createDto,
+    });
+    return plainToInstance(Artist, artist);
   }
 
-  findAll() {
-    return this.store.getAll();
+  async findAll() {
+    const artists = await this.prisma.artist.findMany();
+    return artists.map((artist) => plainToInstance(Artist, artist));
   }
 
-  findOne(id: string) {
-    const entity = this.store.get(id);
-    if (!entity) throw new NotFoundException(MESSAGE.ARTIST_NOT_EXIST);
-    return entity;
+  async findOne(id: string) {
+    const artist = await this.prisma.artist.findUnique({ where: { id } });
+
+    if (!artist) throw new NotFoundException(MESSAGE.ARTIST_NOT_EXIST);
+
+    return plainToInstance(Artist, artist);
   }
 
-  update(id: string, updateDto: UpdateArtistDto) {
-    const entity = this.store.update(id, updateDto);
+  async update(id: string, updateDto: UpdateArtistDto) {
+    const artist = await this.prisma.artist.update({
+      where: { id },
+      data: updateDto,
+    });
 
-    if (!entity) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
+    if (!artist) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
 
-    return entity;
+    return plainToInstance(Artist, artist);
   }
 
-  remove(id: string) {
-    const entity = this.store.delete(id);
-    if (!entity) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
-    this.favsService.removeArtist(id);
-    this.trackService.removeArtistId(id);
-    this.albumService.removeArtistId(id);
+  async remove(id: string) {
+    const artist = await this.prisma.artist.delete({ where: { id } });
+
+    if (!artist) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
+
     return;
   }
 }
