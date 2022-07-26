@@ -6,7 +6,7 @@ export enum STORE_CODE {
 }
 
 export enum TYPE_ENTITY {
-  ARTISTS = 'artists',
-  ALBUMS = 'albums',
-  TRACKS = 'tracks',
+  ARTISTS = 'artist',
+  ALBUMS = 'album',
+  TRACKS = 'track',
 }

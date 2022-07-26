@@ -15,8 +15,9 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+    const timestamp = new Date().toISOString();
     const user = await this.prisma.user.create({
-      data: createUserDto,
+      data: { ...createUserDto, createdAt: timestamp, updatedAt: timestamp },
     });
     return plainToInstance(UserEntity, user);
   }

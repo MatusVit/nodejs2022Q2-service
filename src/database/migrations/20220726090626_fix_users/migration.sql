@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Artist" ALTER COLUMN "grammy" SET DEFAULT false;
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "updatedAt" SET DEFAULT CURRENT_TIMESTAMP;

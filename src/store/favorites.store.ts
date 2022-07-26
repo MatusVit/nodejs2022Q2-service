@@ -10,9 +10,9 @@ export class InMemoryFavoritesStore {
     [TYPE_ENTITY.TRACKS]: [],
   };
 
-  getAll(): FavoriteIds {
-    return this.entities;
-  }
+  // getAll(): FavoriteIds {
+  //   // return this.entities;
+  // }
 
   addId(id: string, typeEntity: TYPE_ENTITY) {
     const array = this.entities[typeEntity];
