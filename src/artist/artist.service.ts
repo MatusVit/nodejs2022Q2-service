@@ -10,19 +10,19 @@ import { Artist } from './entities/artist.entity';
 export class ArtistService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createDto: CreateArtistDto) {
+  async create(createDto: CreateArtistDto): Promise<Artist> {
     const artist = await this.prisma.artist.create({
       data: createDto,
     });
     return plainToInstance(Artist, artist);
   }
 
-  async findAll() {
+  async findAll(): Promise<Artist[]> {
     const artists = await this.prisma.artist.findMany();
     return artists.map((artist) => plainToInstance(Artist, artist));
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Artist> {
     const artist = await this.prisma.artist.findUnique({ where: { id } });
 
     if (!artist) throw new NotFoundException(MESSAGE.ARTIST_NOT_EXIST);
@@ -30,22 +30,26 @@ export class ArtistService {
     return plainToInstance(Artist, artist);
   }
 
-  async update(id: string, updateDto: UpdateArtistDto) {
+  async update(id: string, updateDto: UpdateArtistDto): Promise<Artist> {
+    await this.checkExistById(id);
+
     const artist = await this.prisma.artist.update({
       where: { id },
       data: updateDto,
     });
 
-    if (!artist) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
-
     return plainToInstance(Artist, artist);
   }
 
-  async remove(id: string) {
-    const artist = await this.prisma.artist.delete({ where: { id } });
+  async remove(id: string): Promise<void> {
+    await this.checkExistById(id);
+    await this.prisma.artist.delete({ where: { id } });
+  }
 
-    if (!artist) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
-
-    return;
+  private async checkExistById(id: string): Promise<void> {
+    const count = await this.prisma.artist.count({
+      where: { id },
+    });
+    if (!count) throw new NotFoundException(MESSAGE.ARTIST_NOT_EXIST);
   }
 }

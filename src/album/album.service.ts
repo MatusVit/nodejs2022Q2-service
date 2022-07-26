@@ -10,19 +10,19 @@ import { plainToInstance } from 'class-transformer';
 export class AlbumService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createDto: CreateAlbumDto) {
+  async create(createDto: CreateAlbumDto): Promise<Album> {
     const album = await this.prisma.album.create({
       data: createDto,
     });
     return plainToInstance(Album, album);
   }
 
-  async findAll() {
+  async findAll(): Promise<Album[]> {
     const albums = await this.prisma.album.findMany();
     return albums.map((album) => plainToInstance(Album, album));
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Album> {
     const album = await this.prisma.album.findUnique({ where: { id } });
 
     if (!album) throw new NotFoundException(MESSAGE.ALBUM_NOT_EXIST);
@@ -30,22 +30,25 @@ export class AlbumService {
     return plainToInstance(Album, album);
   }
 
-  async update(id: string, updateDto: UpdateAlbumDto) {
+  async update(id: string, updateDto: UpdateAlbumDto): Promise<Album> {
+    await this.checkExistById(id);
     const album = await this.prisma.album.update({
       where: { id },
       data: updateDto,
     });
 
-    if (!album) throw new NotFoundException(MESSAGE.ALBUM_NOT_EXIST);
-
     return plainToInstance(Album, album);
   }
 
-  async remove(id: string) {
-    const album = await this.prisma.album.delete({ where: { id } });
+  async remove(id: string): Promise<void> {
+    await this.checkExistById(id);
+    await this.prisma.album.delete({ where: { id } });
+  }
 
-    if (!album) throw new NotFoundException(MESSAGE.ALBUM_NOT_EXIST);
-
-    return;
+  private async checkExistById(id: string): Promise<void> {
+    const count = await this.prisma.album.count({
+      where: { id },
+    });
+    if (!count) throw new NotFoundException(MESSAGE.ALBUM_NOT_EXIST);
   }
 }
