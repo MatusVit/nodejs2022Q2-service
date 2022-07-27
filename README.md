@@ -21,16 +21,12 @@ git checkout database
   ```bash
   npm run up:dev:docker
   ```
-- apply the initial migrations. **Only for the first time**
-  ```bash
-  npx prisma migrate dev
-  ```
 
 ## Running application for local development
 
 - run
   ```bash
-   npm run up:dev:docker
+  npm run up:dev:docker
   ```
 - stop
   ```bash
@@ -70,6 +66,8 @@ npm run test test/tracks.e2e-spec.ts
 ```bash
 npm run test test/favorites.e2e-spec.ts
 ```
+
+// TODO \*\*\*
 
 ## Running application - production mode
 
