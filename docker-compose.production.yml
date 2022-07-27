@@ -2,7 +2,11 @@ version: '3.9'
 
 services:
   api:
-    image: matvi/music-library:server
+    build:
+      dockerfile: ./docker/api/Dockerfile
+      context: .
+      target: production
+    image: '${SERVER_IMAGE_NAME}-prod'
     restart: unless-stopped
     env_file:
       - .env
@@ -14,10 +18,12 @@ services:
       - postgres
     networks:
       - container-net
-    command: node dist/main.js
+    command: npm run start:migrate:prod
 
   postgres:
-    image: matvi/music-library:db
+    container_name: '${DB_NAME}-prod'
+    build: ./docker/postgres
+    image: ${DB_IMAGE_NAME}
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB}

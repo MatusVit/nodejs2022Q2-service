@@ -17,7 +17,6 @@ COPY --chown=node:node . .
 RUN npm run build
 ENV NODE_ENV production
 RUN npm ci --only=production && npm cache clean --force
-RUN npx prisma migrate deploy
 USER node
 
 # PRODUCTION
@@ -26,4 +25,6 @@ WORKDIR /usr/app
 COPY --chown=node:node --from=build /usr/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/app/dist ./dist
 COPY --chown=node:node --from=build /usr/app/doc ./doc
-CMD [ "node", "dist/main.js" ]
+COPY --chown=node:node --from=build /usr/app/package*.json ./
+COPY --chown=node:node --from=build /usr/app/src/database ./src/database
+CMD [ "npm", "run", "start:migrate:prod" ]

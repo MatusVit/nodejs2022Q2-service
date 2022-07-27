@@ -10,6 +10,21 @@ git clone https://github.com/MatusVit/nodejs2022Q2-service.git
 git checkout database
 ```
 
+## Running application for production
+
+- set up the environment variables in `.env` file. Use `.env.example`
+- build and run containers
+  ```bash
+  npm run up:prod:docker
+  ```
+- stop
+
+  ```bash
+  npm run down:dev:docker
+  ```
+
+  After starting the app on port (4000 as default) you can open in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+
 ## Installing for local development
 
 - set up the environment variables in `.env` file. Use `.env.example`
@@ -65,28 +80,4 @@ npm run test test/tracks.e2e-spec.ts
 
 ```bash
 npm run test test/favorites.e2e-spec.ts
-```
-
-// TODO \*\*\*
-
-## Running application - production mode
-
-```bash
-docker-compose -f docker-compose.production.yml up
-```
-
-## Downloading Docker Images
-
-```bash
- docker pull matvi/music-library:server
-```
-
-```bash
-docker pull matvi/music-library:db
-```
-
-## Scanning Docker local image
-
-```bash
-npm run scan
 ```
