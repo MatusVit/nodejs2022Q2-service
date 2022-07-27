@@ -4,7 +4,7 @@ services:
   api:
     container_name: ${SERVER_NAME}
     build:
-      dockerfile: Dockerfile
+      dockerfile: ./docker/api/Dockerfile
       context: .
       target: development
     image: ${SERVER_IMAGE_NAME}
