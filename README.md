@@ -6,26 +6,38 @@
 git clone https://github.com/MatusVit/nodejs2022Q2-service.git
 ```
 
-## Installing NPM modules
-
 ```bash
-npm install
+git checkout database
 ```
 
-## Running application
+## Installing for local development
 
-```bash
-npm start
-```
+- set up the environment variables in `.env` file. Use `.env.example`
+- install packages
+  ```bash
+  npm ci
+  ```
+- build and run containers
+  ```bash
+  npm run up:dev:docker
+  ```
+- apply the initial migrations. **Only for the first time**
+  ```bash
+  npx prisma migrate dev
+  ```
 
-or
+## Running application for local development
 
-```bash
-npm run start:dev
-```
-
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+- run
+  ```bash
+   npm run up:dev:docker
+  ```
+- stop
+  ```bash
+  npm run down:dev:docker
+  ```
+  After starting the app on port (4000 as default) you can open
+  in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 
 ## Testing
 
@@ -59,21 +71,7 @@ npm run test test/tracks.e2e-spec.ts
 npm run test test/favorites.e2e-spec.ts
 ```
 
-## Running application with Docker
-
-in docker branch
-
-```bash
-git checkout docker
-```
-
-### development mode
-
-```bash
-docker-compose -f docker-compose.development.yml up -d -V --build
-```
-
-### production mode
+## Running application - production mode
 
 ```bash
 docker-compose -f docker-compose.production.yml up
