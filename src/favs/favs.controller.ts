@@ -7,7 +7,6 @@ import {
   ParseUUIDPipe,
   HttpCode,
 } from '@nestjs/common';
-import { Favorites } from './entities/fav.entity';
 import { FavsService } from './favs.service';
 
 @Controller('favs')
