@@ -52,8 +52,9 @@ git checkout database
 
 ## Testing
 
-After application running open new terminal and enter:
+_NOTE. Packages must be installed to run tests._
 
+After application running open new terminal and enter:
 To run all tests
 
 ```bash

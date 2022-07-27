@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   api:
+    container_name: '${SERVER_NAME}-prod'
     build:
       dockerfile: ./docker/api/Dockerfile
       context: .
@@ -23,7 +24,7 @@ services:
   postgres:
     container_name: '${DB_NAME}-prod'
     build: ./docker/postgres
-    image: ${DB_IMAGE_NAME}
+    image: '${DB_IMAGE_NAME}-prod'
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
