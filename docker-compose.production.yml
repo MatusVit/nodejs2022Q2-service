@@ -33,7 +33,7 @@ services:
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - .:/var/lib/postgresql/data
+      - ${POSTGRES_FILE_LOCATION}:/var/lib/postgresql/data
     networks:
       - container-net
 networks:
