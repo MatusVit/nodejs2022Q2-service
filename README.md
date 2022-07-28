@@ -6,25 +6,41 @@
 git clone https://github.com/MatusVit/nodejs2022Q2-service.git
 ```
 
-## Running application with Docker
-
-in docker branch
-
 ```bash
 git checkout docker
 ```
 
-### development mode
+## Installing NPM modules
 
 ```bash
-docker-compose -f docker-compose.development.yml up
+npm install
 ```
 
-### production mode
+## Running application with Docker
 
-```bash
-docker-compose -f docker-compose.production.yml up
-```
+- **development mode**
+
+  - run
+    ```bash
+    npm run up:dev:docker
+    ```
+    -stop
+    ```bash
+    npm run down:dev:docker
+    ```
+
+- **production mode**
+
+  _NOTE. Images will be downloaded from DockerHub_
+
+  - run
+    ```bash
+    npm run up:prod:docker
+    ```
+  - stop
+    ```bash
+    npm run down:prod:docker
+    ```
 
 ## Downloading Docker Images
 
@@ -40,12 +56,6 @@ docker pull matvi/music-library:db
 
 ```bash
 npm run scan
-```
-
-## Installing NPM modules
-
-```bash
-npm install
 ```
 
 ## Running application for local development
@@ -64,8 +74,6 @@ After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 
 ## Testing
-
-_NOTE. Packages must be installed to run tests._
 
 After application running open new terminal and enter:
 

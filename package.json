@@ -13,13 +13,17 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "up:dev:docker": "docker-compose -f docker-compose.development.yml up -d -V --build",
+    "down:dev:docker": "docker-compose -f docker-compose.development.yml down",
+    "up:prod:docker": "docker-compose -f docker-compose.production.yml up -d",
+    "down:prod:docker": "docker-compose -f docker-compose.production.yml down",
+    "scan": "docker scan matvi/music-library-server",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest --config ./test/jest-e2e.json",
     "test:auth": "cross-env TEST_MODE=auth jest --config ./test/jest-e2e.json",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "scan": "docker scan matvi/music-library:server"
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
