@@ -6,59 +6,6 @@
 git clone https://github.com/MatusVit/nodejs2022Q2-service.git
 ```
 
-## Installing NPM modules
-
-```bash
-npm install
-```
-
-## Running application
-
-```bash
-npm start
-```
-
-or
-
-```bash
-npm run start:dev
-```
-
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-
-## Testing
-
-After application running open new terminal and enter:
-
-To run all tests
-
-```bash
-npm run test
-```
-
-To run only one of all test suites
-
-```bash
-npm run test test/users.e2e-spec.ts
-```
-
-```bash
-npm run test test/albums.e2e-spec.ts
-```
-
-```bash
-npm run test test/artists.e2e-spec.ts
-```
-
-```bash
-npm run test test/tracks.e2e-spec.ts
-```
-
-```bash
-npm run test test/favorites.e2e-spec.ts
-```
-
 ## Running application with Docker
 
 in docker branch
@@ -93,4 +40,59 @@ docker pull matvi/music-library:db
 
 ```bash
 npm run scan
+```
+
+## Installing NPM modules
+
+```bash
+npm install
+```
+
+## Running application for local development
+
+```bash
+npm start
+```
+
+or
+
+```bash
+npm run start:dev
+```
+
+After starting the app on port (4000 as default) you can open
+in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+
+## Testing
+
+_NOTE. Packages must be installed to run tests._
+
+After application running open new terminal and enter:
+
+To run all tests
+
+```bash
+npm run test
+```
+
+To run only one of all test suites
+
+```bash
+npm run test test/users.e2e-spec.ts
+```
+
+```bash
+npm run test test/albums.e2e-spec.ts
+```
+
+```bash
+npm run test test/artists.e2e-spec.ts
+```
+
+```bash
+npm run test test/tracks.e2e-spec.ts
+```
+
+```bash
+npm run test test/favorites.e2e-spec.ts
 ```
