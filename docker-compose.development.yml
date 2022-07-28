@@ -2,12 +2,12 @@ version: '3.9'
 
 services:
   api:
-    container_name: ${SERVER_NAME}
+    container_name: '${SERVER_NAME}-dev'
     build:
       dockerfile: ./docker/api/Dockerfile
       context: .
       target: development
-    image: ${SERVER_IMAGE_NAME}
+    image: '${SERVER_IMAGE_NAME}-dev'
     restart: unless-stopped
     volumes:
       - .:/usr/app
@@ -25,9 +25,9 @@ services:
       - container-net
 
   postgres:
-    container_name: ${DB_NAME}
+    container_name: '${DB_NAME}-dev'
     build: ./docker/postgres
-    image: ${DB_IMAGE_NAME}
+    image: '${DB_IMAGE_NAME}-dev'
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
