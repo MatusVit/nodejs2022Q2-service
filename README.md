@@ -1,72 +1,106 @@
 # Home Library Service
 
-## Prerequisites
-
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
-
 ## Downloading
 
+```bash
+git clone https://github.com/MatusVit/nodejs2022Q2-service.git
 ```
-git clone {repository URL}
+
+```bash
+git checkout docker
 ```
 
 ## Installing NPM modules
 
-```
+```bash
 npm install
 ```
 
-## Running application
+## Running application with Docker
 
+- **development mode**
+
+  - run
+    ```bash
+    npm run up:dev:docker
+    ```
+  - stop
+    ```bash
+    npm run down:dev:docker
+    ```
+
+- **production mode**
+
+  _NOTE. Images will be downloaded from DockerHub_
+
+  - run
+    ```bash
+    npm run up:prod:docker
+    ```
+  - stop
+    ```bash
+    npm run down:prod:docker
+    ```
+
+## Downloading Docker Images
+
+```bash
+ docker pull matvi/music-library:server
 ```
+
+```bash
+docker pull matvi/music-library:db
+```
+
+## Scanning Docker local image
+
+```bash
+npm run scan
+```
+
+## Running application for local development
+
+```bash
 npm start
+```
+
+or
+
+```bash
+npm run start:dev
 ```
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests
 
-```
+```bash
 npm run test
 ```
 
 To run only one of all test suites
 
-```
-npm run test -- <path to suite>
-```
-
-To run all test with authorization
-
-```
-npm run test:auth
+```bash
+npm run test test/users.e2e-spec.ts
 ```
 
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
+```bash
+npm run test test/albums.e2e-spec.ts
 ```
 
-### Auto-fix and format
-
-```
-npm run lint
+```bash
+npm run test test/artists.e2e-spec.ts
 ```
 
+```bash
+npm run test test/tracks.e2e-spec.ts
 ```
-npm run format
+
+```bash
+npm run test test/favorites.e2e-spec.ts
 ```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
