@@ -24,7 +24,7 @@ npm install
     ```bash
     npm run up:dev:docker
     ```
-    -stop
+  - stop
     ```bash
     npm run down:dev:docker
     ```
