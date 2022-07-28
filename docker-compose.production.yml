@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: '${SERVER_NAME}-prod'
+    build:
+      dockerfile: ./docker/api/Dockerfile
+      context: .
+      target: production
+    image: '${SERVER_IMAGE_NAME}-prod'
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: 'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public'
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+    networks:
+      - container-net
+    command: npm run start:migrate:prod
+
+  postgres:
+    container_name: '${DB_NAME}-prod'
+    build: ./docker/postgres
+    image: '${DB_IMAGE_NAME}-prod'
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - ${POSTGRES_FILE_LOCATION}:/var/lib/postgresql/data
+    networks:
+      - container-net
+networks:
+  container-net:
+    name: container-net
+    driver: bridge
