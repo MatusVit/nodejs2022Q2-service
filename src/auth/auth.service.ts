@@ -13,35 +13,10 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
-  private async getHash(password) {
-    return await bcrypt.hash(password, process.env.CRYPT_SALT);
-  }
-
-  private async getTokens(userId: string, login: string) {
-    const payload = { userId, login };
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync({
-        payload,
-        option: {
-          secret: process.env.JWT_SECRET_ACCESS_KEY,
-          expiresIn: 60 * 60 * +process.env.TOKEN_EXPIRE_TIME_HOUR,
-        },
-      }),
-      this.jwtService.signAsync({
-        payload,
-        option: {
-          secret: process.env.JWT_SECRET_REFRESH_KEY,
-          expiresIn: 60 * 60 * +process.env.TOKEN_REFRESH_EXPIRE_TIME_HOUR,
-        },
-      }),
-    ]);
-    return plainToInstance(Tokens, { accessToken, refreshToken });
-  }
-
   async signup(dto: AuthDto): Promise<Message> {
     const hash = await this.getHash(dto.password);
     const timestamp = new Date().toISOString();
-    const user = await this.prisma.user.create({
+    await this.prisma.user.create({
       data: {
         ...dto,
         password: hash,
@@ -49,7 +24,6 @@ export class AuthService {
         updatedAt: timestamp,
       },
     });
-    console.log('signup USER=', user); // ! ***
 
     return plainToInstance(Message, {
       massage: `${dto.login} ${MESSAGE.USER_REGISTERED}`,
@@ -57,14 +31,53 @@ export class AuthService {
   }
 
   async login(dto: AuthDto): Promise<Tokens> {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findUnique({
       where: { login: dto.login },
     });
-
-    return await this.getTokens(user.id, user.login);
+    const tokens = await this.getTokens(user.id, user.login);
+    await this.updateRefreshToken(user.id, tokens.refreshToken);
+    return tokens;
   }
 
   async refreshToken() {
+    // todo ! ***
     return 'refreshToken';
+  }
+
+  async updateRefreshToken(userId: string, refreshToken: string) {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { refreshToken },
+    });
+  }
+
+  private async getHash(password) {
+    return await bcrypt.hash(password, +process.env.CRYPT_SALT);
+  }
+
+  private async getTokens(userId: string, login: string) {
+    const payload = { userId, login };
+    console.log(
+      'process.env.JWT_SECRET_ACCESS_KEY = ',
+      process.env.JWT_SECRET_ACCESS_KEY,
+    ); // ! ***
+    console.log(
+      'process.env.JWT_SECRET_REFRESH_KEY = ',
+      process.env.JWT_SECRET_REFRESH_KEY,
+    ); // ! ***
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload, {
+        secret: `${process.env.JWT_SECRET_ACCESS_KEY}`,
+        expiresIn: 60 * 60 * +process.env.TOKEN_EXPIRE_TIME_HOUR,
+      }),
+      this.jwtService.signAsync(payload, {
+        secret: `${process.env.JWT_SECRET_REFRESH_KEY}`,
+        expiresIn: 60 * 60 * +process.env.TOKEN_REFRESH_EXPIRE_TIME_HOUR,
+      }),
+    ]);
+    console.log('accessToken, refreshToken', accessToken, refreshToken); // ! ***
+
+    return plainToInstance(Tokens, { accessToken, refreshToken });
   }
 }
