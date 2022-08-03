@@ -1,6 +1,7 @@
 import { TYPE_ENTITY } from './commons';
 
 export const MESSAGE = {
+  USER_REGISTERED: 'user has been registered',
   USER_NOT_EXIST: `User doesn't exist`,
   ARTIST_NOT_EXIST: `Artist doesn't exist`,
   ALBUM_NOT_EXIST: `Album doesn't exist`,
