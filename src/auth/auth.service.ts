@@ -53,14 +53,15 @@ export class AuthService {
   }
 
   async refresh(userId: string, refreshToken: string): Promise<Tokens> {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });
+
     if (!user) throw new UnauthorizedException(MESSAGE.USER_NOT_EXIST);
 
     const isCorrectRefreshToken = refreshToken === user.refreshToken;
     if (!isCorrectRefreshToken)
-      throw new UnauthorizedException(MESSAGE.BAD_REFRESH_TOKEN);
+      throw new ForbiddenException(MESSAGE.BAD_REFRESH_TOKEN);
 
     return await this.getTokens(user.id, user.login);
   }

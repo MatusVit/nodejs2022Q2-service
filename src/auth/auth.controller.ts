@@ -34,16 +34,14 @@ export class AuthController {
     return await this.authService.login(dto);
   }
 
-  // @Public()
+  @Public()
   @UseGuards(RefreshTokenGuard)
   @Post('/refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(@Req() req: Request, @Body() dto: RefreshDto): Promise<Tokens> {
-    // Server should answer with status code 200 and tokens in body if dto is valid
-    // TODO *** 401 and 403
-    // Server should answer with status code 401 and corresponding message if dto is invalid (no refreshToken in body)
-    // Server should answer with status code 403 and corresponding message if authentication failed (Refresh token is invalid or expired)
-    const userId = req.user['userId'];
-    return await this.authService.refresh(userId, dto.refreshToken);
+  async refresh(
+    @Req() req: Request /*, @Body() dto: RefreshDto */,
+  ): Promise<Tokens> {
+    const { body, user } = req;
+    return await this.authService.refresh(user['userId'], body.refreshToken);
   }
 }
