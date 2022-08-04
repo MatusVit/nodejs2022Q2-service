@@ -10,3 +10,8 @@ export enum TYPE_ENTITY {
   ALBUMS = 'album',
   TRACKS = 'track',
 }
+
+export enum STRATEGY_NAME {
+  JWT = 'access-jwt',
+  REFRESH_JWT = 'refresh-jwt',
+}

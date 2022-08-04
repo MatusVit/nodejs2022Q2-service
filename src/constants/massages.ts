@@ -1,7 +1,10 @@
 import { TYPE_ENTITY } from './commons';
 
 export const MESSAGE = {
+  BAD_REFRESH_TOKEN: 'Refresh token is invalid or expired',
   USER_REGISTERED: 'user has been registered',
+  BAD_LOGIN_USER: 'No user with such login',
+  BAD_PASSWORD: 'Invalid password',
   USER_NOT_EXIST: `User doesn't exist`,
   ARTIST_NOT_EXIST: `Artist doesn't exist`,
   ALBUM_NOT_EXIST: `Album doesn't exist`,
