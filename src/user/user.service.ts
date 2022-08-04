@@ -9,15 +9,22 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { plainToInstance } from 'class-transformer';
+import { compareData, getHash } from 'src/common/utils/hash.utils';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async create(dto: CreateUserDto): Promise<UserEntity> {
+    const hash = await getHash(dto.password);
     const timestamp = new Date().toISOString();
     const user = await this.prisma.user.create({
-      data: { ...createUserDto, createdAt: timestamp, updatedAt: timestamp },
+      data: {
+        ...dto,
+        password: hash,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+      },
     });
     return plainToInstance(UserEntity, user);
   }
@@ -41,13 +48,18 @@ export class UserService {
 
     if (!updateUser) throw new NotFoundException(MESSAGE.USER_NOT_EXIST);
 
-    if (updateUser.password !== updatePasswordDto.oldPassword)
+    const isCorrectPassword = await compareData(
+      updatePasswordDto.oldPassword,
+      updateUser.password,
+    );
+    if (!isCorrectPassword)
       throw new ForbiddenException(MESSAGE.PASSWORD_WRONG);
 
+    const hash = await getHash(updatePasswordDto.newPassword);
     const user = await this.prisma.user.update({
       where: { id },
       data: {
-        password: updatePasswordDto.newPassword,
+        password: hash,
         version: { increment: 1 },
       },
     });

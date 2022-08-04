@@ -46,8 +46,8 @@ export class UserController {
     return await this.userService.updatePassword(id, updatePasswordDto);
   }
 
-  @HttpCode(204)
   @Delete(':id')
+  @HttpCode(204)
   async remove(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): Promise<void> {

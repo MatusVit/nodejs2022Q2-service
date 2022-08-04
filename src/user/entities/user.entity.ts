@@ -12,6 +12,9 @@ export class UserEntity implements IUser {
 
   version: number;
 
+  @Exclude()
+  refreshToken: string;
+
   @Transform(({ value }) => transformTimestamp(value))
   createdAt: number;
 

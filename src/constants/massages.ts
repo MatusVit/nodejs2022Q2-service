@@ -1,6 +1,7 @@
 import { TYPE_ENTITY } from './commons';
 
 export const MESSAGE = {
+  NOT_UNIQUE_LOGIN: 'This login is already exist',
   BAD_REFRESH_TOKEN: 'Refresh token is invalid or expired',
   USER_REGISTERED: 'user has been registered',
   BAD_LOGIN_USER: 'No user with such login',
