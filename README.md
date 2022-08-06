@@ -7,7 +7,7 @@ git clone https://github.com/MatusVit/nodejs2022Q2-service.git
 ```
 
 ```bash
-git checkout database
+git checkout authentication
 ```
 
 ## Running application for production
@@ -58,27 +58,27 @@ After application running open new terminal and enter:
 To run all tests
 
 ```bash
-npm run test
+npm run test:auth
 ```
 
 To run only one of all test suites
 
 ```bash
-npm run test test/users.e2e-spec.ts
+npm run test:auth test/users.e2e-spec.ts
 ```
 
 ```bash
-npm run test test/albums.e2e-spec.ts
+npm run test:auth test/albums.e2e-spec.ts
 ```
 
 ```bash
-npm run test test/artists.e2e-spec.ts
+npm run test:auth test/artists.e2e-spec.ts
 ```
 
 ```bash
-npm run test test/tracks.e2e-spec.ts
+npm run test:auth test/tracks.e2e-spec.ts
 ```
 
 ```bash
-npm run test test/favorites.e2e-spec.ts
+npm run test:auth test/favorites.e2e-spec.ts
 ```
