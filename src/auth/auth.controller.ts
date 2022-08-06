@@ -16,14 +16,16 @@ import { AuthDto } from './dto/auth.dto';
 import { Message } from './entities/message.entity';
 import { Request } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
-import { AppLogger } from 'src/logging/logging.Service';
+import { LoggingService } from 'src/logging/logging.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private logger: AppLogger, // ! ***
-  ) {}
+    private logger: LoggingService, // ! ***
+  ) {
+    this.logger.setContext(AuthController.name);
+  }
 
   @Public()
   @Post('/signup')
@@ -36,7 +38,7 @@ export class AuthController {
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: AuthDto): Promise<Tokens> {
-    this.logger.debug(`!!! login ${dto.login}`, AuthController.name); // ! ***
+    this.logger.debug(`!!! login ${dto.login}`); // ! ***
     return await this.authService.login(dto);
   }
 

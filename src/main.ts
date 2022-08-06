@@ -6,17 +6,18 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { readFile } from 'fs/promises';
 import { load } from 'js-yaml';
 import { ValidationPipe } from '@nestjs/common';
-import { AppLogger } from './logging/logging.Service';
+import { LoggingService } from './logging/logging.service';
 
 const port = process.env.PORT || 4000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
-    // logger: console,
+    // logger: console, // ! ***
     // logger: ['log', 'error', 'warn', 'debug', 'verbose'],
   });
-  app.useLogger(app.get(AppLogger));
+  app.useLogger(new LoggingService()); // ! ***  app.useLogger(new LoggingService(configService));
+
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const rootDirname = dirname(__dirname);
