@@ -33,6 +33,17 @@ components:
       required:
         - id
         - login
+
+    Tokens:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+        refreshToken:
+          type: string
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+
     Artist:
       type: object
       properties:
@@ -107,19 +118,120 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Track'
-  # responses:
-  #   UnauthorizedError:
-  #     description: Access token is missing or invalid
-  # securitySchemes:
-  #   bearerAuth:
-  #     type: http
-  #     scheme: bearer
-  #     bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
-# security:
-#   - bearerAuth: []
+security:
+  - bearerAuth: []
 
 paths:
+  /auth/signup:
+    post:
+      tags:
+        - Authentication
+      summary: Signup a new user
+      description: Creates a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                login:
+                  type: string
+                  description: The user's login
+                password:
+                  type: string
+                  description: The user's password
+              required:
+                - login
+                - password
+      responses:
+        201:
+          description: The user has been created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+                properties:
+                  password: not
+        400:
+          description: Bad request. body does not contain required fields
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login
+      description: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                login:
+                  type: string
+                  description: The user's login
+                password:
+                  type: string
+                  description: The user's password
+              required:
+                - login
+                - password
+      responses:
+        200:
+          description: The user has been login.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tokens'
+        400:
+          description: Bad request. No login or password, or they are not a strings
+        403:
+          description: No user with such login, password doesn't match actual one
+
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh token
+      description: Refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                refreshToken:
+                  type: string
+                  description: Refresh token
+              required:
+                - refreshToken
+      responses:
+        200:
+          description: New tokens.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tokens'
+        401:
+          description: Bad request. No refreshToken in body
+        403:
+          description: Refresh token is invalid or expired
+
   /user:
     get:
       tags:

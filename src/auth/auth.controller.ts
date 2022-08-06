@@ -13,7 +13,6 @@ import {
 import { AuthDto } from './dto/auth.dto';
 import { Message } from './entities/message.entity';
 import { Request } from 'express';
-import { RefreshDto } from './dto/refresh.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('auth')
@@ -34,13 +33,11 @@ export class AuthController {
     return await this.authService.login(dto);
   }
 
-  @Public()
+  // @Public()
   @UseGuards(RefreshTokenGuard)
   @Post('/refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(
-    @Req() req: Request /*, @Body() dto: RefreshDto */,
-  ): Promise<Tokens> {
+  async refresh(@Req() req: Request): Promise<Tokens> {
     const { body, user } = req;
     return await this.authService.refresh(user['userId'], body.refreshToken);
   }
