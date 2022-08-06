@@ -14,10 +14,14 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { AppLogger } from 'src/logging/logging.Service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private logger: AppLogger, // ! ***
+  ) {}
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
