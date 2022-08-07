@@ -1,14 +1,7 @@
 import { ConsoleLogger, Injectable, Scope } from '@nestjs/common';
 import { getLogLevels } from 'src/common/utils/log.utils';
-import { LogFileWriter } from './writerLogFiles.service';
-
-const LOG_TYPE = {
-  VERBOSE: 'VERBOSE',
-  DEBUG: 'DEBUG',
-  LOG: 'LOG',
-  WARN: 'WARN',
-  ERROR: 'ERROR',
-};
+import { LOG_TYPE } from 'src/constants/commons';
+import { LogFileWriter } from './LogFileWriter';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class LoggingService extends ConsoleLogger {
@@ -21,22 +14,36 @@ export class LoggingService extends ConsoleLogger {
   }
 
   debug(message, ...optionalParams) {
+    if (!this.isLevelEnabled('debug')) {
+      return;
+    }
     this.writerToFile.writeLog(this.getMessage(message, ' ', LOG_TYPE.DEBUG));
     super.debug(message, ...optionalParams);
   }
 
   log(message, ...optionalParams): void {
+    if (!this.isLevelEnabled('log')) {
+      return;
+    }
     this.writerToFile.writeLog(this.getMessage(message, ' ', LOG_TYPE.LOG));
     super.log(message, ...optionalParams);
   }
 
   warn(message, ...optionalParams): void {
+    if (!this.isLevelEnabled('warn')) {
+      return;
+    }
     this.writerToFile.writeLog(this.getMessage(message, ' ', LOG_TYPE.WARN));
     super.log(message, ...optionalParams);
   }
 
   error(message, ...optionalParams): void {
-    this.writerToFile.writeLog(this.getMessage(message, ' ', LOG_TYPE.WARN));
+    if (!this.isLevelEnabled('error')) {
+      return;
+    }
+    const log = this.getMessage(message, ' ', LOG_TYPE.ERROR);
+    this.writerToFile.writeLog(log);
+    this.writerToFile.writeError(log);
     super.error(message, ...optionalParams);
   }
 

@@ -15,3 +15,11 @@ export enum STRATEGY_NAME {
   JWT = 'access-jwt',
   REFRESH_JWT = 'refresh-jwt',
 }
+
+export enum LOG_TYPE {
+  VERBOSE = 'VERBOSE',
+  DEBUG = 'DEBUG',
+  LOG = 'LOG',
+  WARN = 'WARN',
+  ERROR = 'ERROR',
+}

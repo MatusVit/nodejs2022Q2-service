@@ -13,6 +13,7 @@ WORKDIR /usr/app
 COPY --chown=node:node package*.json ./
 COPY --chown=node:node --from=development /usr/app/node_modules ./node_modules
 COPY --chown=node:node --from=development /usr/app/doc ./doc
+COPY --chown=node:node --from=development /usr/app/logs ./logs
 COPY --chown=node:node . .
 RUN npm run build
 ENV NODE_ENV production
