@@ -1,26 +1,46 @@
 import { ConsoleLogger, Injectable, Scope } from '@nestjs/common';
+import { getLogLevels } from 'src/common/utils/log.utils';
+import { LogFileWriter } from './writerLogFiles.service';
+
+const LOG_TYPE = {
+  VERBOSE: 'VERBOSE',
+  DEBUG: 'DEBUG',
+  LOG: 'LOG',
+  WARN: 'WARN',
+  ERROR: 'ERROR',
+};
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class LoggingService extends ConsoleLogger {
+  writerToFile: LogFileWriter;
+
   constructor() {
     super();
-    this.setLogLevels(['log', 'error', 'warn', 'debug', 'verbose']); // ! *** LogLevel = 'log' | 'error' | 'warn' | 'debug' | 'verbose'
+    this.setLogLevels(getLogLevels(+process.env.LOG_LEVEL));
+    this.writerToFile = LogFileWriter.getInstance();
   }
 
-  // TODO *** write to a log files
+  debug(message, ...optionalParams) {
+    this.writerToFile.writeLog(this.getMessage(message, ' ', LOG_TYPE.DEBUG));
+    super.debug(message, ...optionalParams);
+  }
 
-  // error(message: any, stack?: string, context?: string) {
-  //   // add your tailored logic here
-  //   super.error(message, stack, context);
-  // }
+  log(message, ...optionalParams): void {
+    this.writerToFile.writeLog(this.getMessage(message, ' ', LOG_TYPE.LOG));
+    super.log(message, ...optionalParams);
+  }
 
-  // log(message: any, context?: string): void {
-  //   const newMessage = `>>> ${message}`; // ! ***
-  //   super.log(newMessage, context);
-  // }
+  warn(message, ...optionalParams): void {
+    this.writerToFile.writeLog(this.getMessage(message, ' ', LOG_TYPE.WARN));
+    super.log(message, ...optionalParams);
+  }
 
-  // debug(message: any, context?: string): void {
-  //   const newMessage = `@@@ ${message}`; // ! ***
-  //   super.debug(newMessage, context);
-  // }
+  error(message, ...optionalParams): void {
+    this.writerToFile.writeLog(this.getMessage(message, ' ', LOG_TYPE.WARN));
+    super.error(message, ...optionalParams);
+  }
+
+  private getMessage(message, context = '', logLevel = 'LOG') {
+    return `[${new Date().toISOString()}] - ${logLevel} [${context}] ${message}\n`;
+  }
 }

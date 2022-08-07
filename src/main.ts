@@ -13,11 +13,9 @@ const port = process.env.PORT || 4000;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
-    // logger: console, // ! ***
-    // logger: ['log', 'error', 'warn', 'debug', 'verbose'],
   });
   app.useLogger(new LoggingService()); // ! ***  app.useLogger(new LoggingService(configService));
-
+  // app.useGlobalFilters(new HttpExceptionFilter()); // ! ***
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const rootDirname = dirname(__dirname);

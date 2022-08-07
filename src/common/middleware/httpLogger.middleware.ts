@@ -11,15 +11,15 @@ export class HttpLoggerMiddleware implements NestMiddleware {
   }
 
   use(request: Request, response: Response, next: NextFunction): void {
-    const { originalUrl, method, body, params } = request;
+    const { originalUrl, method, body, query } = request;
 
     response.on('finish', () => {
       const { statusCode } = response;
 
       this.logger.log(
-        `[${method} ${originalUrl}] PARAMS:${params[0]} BODY:${JSON.stringify(
-          body,
-        )} PARAMS:${params[0]} => Status:${statusCode}`,
+        `[${method} ${originalUrl}] PARAMS:${JSON.stringify(
+          query,
+        )} BODY:${JSON.stringify(body)} => Status:${statusCode}`,
       );
     });
 
