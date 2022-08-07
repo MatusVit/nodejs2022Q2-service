@@ -7,7 +7,7 @@ git clone https://github.com/MatusVit/nodejs2022Q2-service.git
 ```
 
 ```bash
-git checkout authentication
+git checkout logging
 ```
 
 ## Running application for production
