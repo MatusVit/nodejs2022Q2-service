@@ -6,7 +6,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { readFile } from 'fs/promises';
 import { load } from 'js-yaml';
 import { ValidationPipe } from '@nestjs/common';
-import { LoggingService } from './logging/logging.service';
+import { LoggingService } from './logging/log.service';
 
 const port = process.env.PORT || 4000;
 const LOGGER_NAME = 'bootstrap';

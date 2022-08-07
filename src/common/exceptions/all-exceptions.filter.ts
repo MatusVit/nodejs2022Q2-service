@@ -6,7 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { LoggingService } from 'src/logging/logging.service';
+import { LoggingService } from 'src/logging/log.service';
 
 const LOGGER_NAME = 'ExceptionsFilter';
 
