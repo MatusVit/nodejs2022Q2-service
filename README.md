@@ -50,6 +50,16 @@ git checkout authentication
   After starting the app on port (4000 as default) you can open
   in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 
+## Logging
+
+_NOTE. Log files are created in the folder `./logs`._
+
+_NOTE. Log level by default is 4._
+
+0-4 ['error', 'warn', 'log', 'debug', 'verbose']
+
+Select log-level change `LOG_LEVEL` in `.env` file
+
 ## Testing
 
 _NOTE. Packages must be installed to run tests._
