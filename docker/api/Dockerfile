@@ -26,6 +26,7 @@ WORKDIR /usr/app
 COPY --chown=node:node --from=build /usr/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/app/dist ./dist
 COPY --chown=node:node --from=build /usr/app/doc ./doc
+COPY --chown=node:node --from=development /usr/app/logs ./logs
 COPY --chown=node:node --from=build /usr/app/package*.json ./
 COPY --chown=node:node --from=build /usr/app/src/database ./src/database
 CMD [ "npm", "run", "start:migrate:prod" ]
