@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, statSync, writeFileSync } from 'fs';
-import { writeFile, stat } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 import { resolve } from 'path';
 import { LOG_TYPE } from 'src/constants/commons';
 

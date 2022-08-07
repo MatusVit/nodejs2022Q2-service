@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoggingService } from 'src/logging/logging.service';
 
 @Controller('user')
 export class UserController {
