@@ -16,13 +16,15 @@ import { AuthDto } from './dto/auth.dto';
 import { Message } from './entities/message.entity';
 import { Request } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
+import { LoggingService } from 'src/logging/logging.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private authService: AuthService, // private logger: LoggingService, // ***
+    private authService: AuthService,
+    private logger: LoggingService,
   ) {
-    // this.logger.setContext(AuthController.name); // ***
+    this.logger.setContext(AuthController.name); // ***
   }
 
   @Public()
