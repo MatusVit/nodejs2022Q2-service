@@ -10,6 +10,8 @@ import { FavsModule } from './favs/favs.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { LoggingModule } from './logging/logging.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './common/exceptions/all-exceptions.filter';
 
 @Module({
   imports: [
@@ -23,7 +25,13 @@ import { LoggingModule } from './logging/logging.module';
     LoggingModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

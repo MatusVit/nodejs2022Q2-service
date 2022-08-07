@@ -14,8 +14,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   });
-  app.useLogger(new LoggingService()); // ! ***  app.useLogger(new LoggingService(configService));
-  // app.useGlobalFilters(new HttpExceptionFilter()); // ! ***
+  const logger = new LoggingService();
+  app.useLogger(logger); // ! ***  app.useLogger(new LoggingService(configService));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const rootDirname = dirname(__dirname);
