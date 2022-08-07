@@ -21,10 +21,9 @@ import { LoggingService } from 'src/logging/logging.service';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private authService: AuthService,
-    private logger: LoggingService, // ! ***
+    private authService: AuthService, // private logger: LoggingService, // ***
   ) {
-    this.logger.setContext(AuthController.name);
+    // this.logger.setContext(AuthController.name); // ***
   }
 
   @Public()
@@ -38,11 +37,6 @@ export class AuthController {
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: AuthDto): Promise<Tokens> {
-    this.logger.verbose(`!!! verbose ${dto.login}`); // ! ***
-    this.logger.debug(`!!! debug ${dto.login}`); // ! ***
-    this.logger.log(`!!! log ${dto.login}`); // ! ***
-    this.logger.warn(`!!! warn ${dto.login}`); // ! ***
-    this.logger.error(`!!! error ${dto.login}`); // ! ***
     return await this.authService.login(dto);
   }
 

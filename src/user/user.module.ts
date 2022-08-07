@@ -4,7 +4,7 @@ import { UserController } from './user.controller';
 import { LoggingModule } from 'src/logging/logging.module';
 
 @Module({
-  imports: [LoggingModule], // ! ***
+  imports: [LoggingModule],
   controllers: [UserController],
   providers: [UserService],
 })

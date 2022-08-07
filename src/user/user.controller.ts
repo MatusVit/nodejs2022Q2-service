@@ -19,9 +19,10 @@ import { LoggingService } from 'src/logging/logging.service';
 @Controller('user')
 export class UserController {
   constructor(
-    private readonly userService: UserService,
-    private readonly logger: LoggingService, // ! ***
-  ) {}
+    private readonly userService: UserService, // private readonly logger: LoggingService, // ***
+  ) {
+    // this.logger.setContext(UserController.name); // ***
+  }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()

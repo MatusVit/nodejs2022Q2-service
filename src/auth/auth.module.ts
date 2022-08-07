@@ -9,7 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { LoggingModule } from 'src/logging/logging.module';
 
 @Module({
-  imports: [JwtModule.register({}), LoggingModule], // ! ***
+  imports: [JwtModule.register({}), LoggingModule],
   controllers: [AuthController],
   providers: [
     {

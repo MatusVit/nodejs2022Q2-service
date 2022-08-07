@@ -1,4 +1,3 @@
-import { Message } from './../../auth/entities/message.entity';
 import {
   Catch,
   ArgumentsHost,
@@ -21,8 +20,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
   }
 
   catch(exception: unknown, host: ArgumentsHost): void {
-    console.log('******** catch ******** ', JSON.stringify(exception)); // ! ***
-
     const { httpAdapter } = this.httpAdapterHost;
 
     const ctx = host.switchToHttp();
@@ -45,7 +42,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
     };
 
     if (exception instanceof HttpException === false) {
-      this.logger.error(JSON.stringify(exception));
+      this.logger.error(
+        `Not HttpException: ${exception['message']} \n ${exception['stack']}`,
+      );
     } else {
       this.logger.error(JSON.stringify(responseBody));
     }
